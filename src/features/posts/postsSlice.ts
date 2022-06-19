@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 
 export class Post {
     id: number;
@@ -30,5 +31,7 @@ const postsSlice = createSlice({
     initialState,
     reducers: {}
 })
+
+export const initialPosts = (state: RootState) => state.posts;
 
 export default postsSlice.reducer
