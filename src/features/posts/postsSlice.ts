@@ -29,9 +29,16 @@ const initialState: PostsState = {
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {}
+    reducers: {
+        // state refers to the array as this slice is only aware of the data it's responsible for
+        postAdded(state, action) {
+            state.posts.push(action.payload)
+        }
+    }
 })
 
 export const initialPosts = (state: RootState) => state.posts;
+
+export const { postAdded } = postsSlice.actions; 
 
 export default postsSlice.reducer
