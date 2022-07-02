@@ -32,7 +32,8 @@ const postsSlice = createSlice({
     reducers: {
         // state refers to the array as this slice is only aware of the data it's responsible for
         postAdded(state, action) {
-            state.posts.push(action.payload)
+            const post = new Post(action.payload.id, action.payload.title, action.payload.content)
+            state.posts.push(post)
         },
         postUpdated(state, action) {
             const { id, title, content } = action.payload 
