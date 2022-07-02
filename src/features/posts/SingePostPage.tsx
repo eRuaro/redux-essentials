@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 
 type SinglePostPageParams = {
     postId: string
@@ -31,6 +31,9 @@ export const SinglePostPage: React.FC<SinglePostPageProps> = ( { match } ) => {
                     {post.title}
                 </h2>
                 <p className="post-content">{post.content}</p>
+                <Link to={`/editPost/${post.id}`} className="button">
+                    Edit Post
+                </Link>
             </article>
         </section>
     )
