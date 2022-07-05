@@ -12,8 +12,7 @@ type EditPostFormParams = {
 type EditPostFormProps = RouteComponentProps<EditPostFormParams>
 
 export const EditPostForm: React.FC<EditPostFormProps> = ( { match } ) => {
-    const postIdString  = match.params.postId
-    const postId: number = +postIdString
+    const postId= match.params.postId
 
     const post = useSelector((state: RootState) => state.posts.posts.find(post => post.id === postId))
 

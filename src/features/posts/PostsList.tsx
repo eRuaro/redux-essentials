@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 export const PostsList = () => {
     const listOfPosts = useSelector((state: RootState) => state.posts.posts);
 
-    const renderedPosts = listOfPosts.map(post => (
+    // sort posts in reverse chronological order by datetime string
+    const orderedPosts = listOfPosts.slice().sort((a, b) => b.date.localeCompare(a.date))
+
+    const renderedPosts = orderedPosts.map(post => (
         <article className="post-excerpt" key={post.id}>
             <h3>{post.title}</h3>
             <p>Post Id: {post.id}</p>
