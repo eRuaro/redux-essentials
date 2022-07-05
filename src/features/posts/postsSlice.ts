@@ -8,6 +8,7 @@ export class Post {
     content: string;
     userId: string;
     date: string;
+    reactions: { [key: string]: number };
 
     constructor(id: string, title: string, content: string, userId: string, date: string) {
         this.id = id;
@@ -15,6 +16,13 @@ export class Post {
         this.content = content;
         this.userId = userId;
         this.date = date
+        this.reactions = {
+            "thumbsUp": 0,
+            "hooray": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0,
+        }
     }
 }
 
@@ -48,12 +56,20 @@ const postsSlice = createSlice({
                 existingPost.title = title
                 existingPost.content = content
             }
+        },
+        reactionAdded(state, action) {
+            const { postId, reaction } = action.payload
+            const existingPost = state.posts.find(post => post.id === postId)
+
+            if (existingPost) {
+                existingPost.reactions[reaction]++
+            }
         }
     }
 })
 
 export const initialPosts = (state: RootState) => state.posts;
 
-export const { postAdded, postUpdated } = postsSlice.actions; 
+export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions; 
 
 export default postsSlice.reducer

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { PostAuthor } from "./PostAuthor"
+import { ReactionButton } from "./ReactionButton";
 
 type SinglePostPageParams = {
     postId: string
@@ -34,7 +35,7 @@ export const SinglePostPage: React.FC<SinglePostPageProps> = ( { match } ) => {
                 <Link to={`/editPost/${post.id}`} className="button">
                     Edit Post
                 </Link>
-                <p></p>
+                <ReactionButton post={post}> </ReactionButton>
                 <PostAuthor userId={post.userId}></PostAuthor>
                 <p> on: {post.date} </p>
             </article>
