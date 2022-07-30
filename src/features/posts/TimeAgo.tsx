@@ -2,7 +2,11 @@ import React from "react";
 
 import { parseISO, formatDistanceToNow } from "date-fns";
 
-export const TimeAgo = (timestamp: string) => {
+interface TimeAgoProps {
+    timestamp: string
+}
+
+export const TimeAgo: React.FC<TimeAgoProps> = ({ timestamp }) => {
     let timeAgo = ""
 
     if (timestamp) {

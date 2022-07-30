@@ -4,6 +4,7 @@ import { RootState } from "../../app/store";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { PostAuthor } from "./PostAuthor"
 import { ReactionButton } from "./ReactionButton";
+import { selectPostById } from "./postsSlice";
 
 type SinglePostPageParams = {
     postId: string
@@ -13,7 +14,7 @@ type SinglePostPageProps = RouteComponentProps<SinglePostPageParams>
 
 export const SinglePostPage: React.FC<SinglePostPageProps> = ( { match } ) => {
     const postId = match.params.postId;
-    const post = useSelector((state: RootState) => state.posts.posts.find(post => post.id === postId))
+    const post = useSelector((state: RootState) => selectPostById(state, postId))
 
     if (!post) {
         return (

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../app/store";
 
-import { postUpdated } from "./postsSlice";
+import { postUpdated, selectPostById } from "./postsSlice";
 
 type EditPostFormParams = {
     postId: string, 
@@ -14,7 +14,7 @@ type EditPostFormProps = RouteComponentProps<EditPostFormParams>
 export const EditPostForm: React.FC<EditPostFormProps> = ( { match } ) => {
     const postId= match.params.postId
 
-    const post = useSelector((state: RootState) => state.posts.posts.find(post => post.id === postId))
+    const post = useSelector((state: RootState) => selectPostById(state, postId))
 
     const [title, setTitle] = useState(post!.title)
     const [content, setContent] = useState(post!.content)  

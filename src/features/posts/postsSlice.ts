@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
+import { client } from '../../api/client';
 import { RootState } from '../../app/store';
 
 export class Post {
@@ -27,8 +28,9 @@ export class Post {
 }
 
 export interface PostsState {
-    posts: Post[];
-    status: 'idle' | "pending" | "error" | "success";
+    posts: Post[],
+    status: 'idle' | "pending" | "success" | "error",
+    error: string | null
 }
 
 const initialState: PostsState = {
@@ -37,6 +39,7 @@ const initialState: PostsState = {
         new Post("2", 'Post 2', 'Content 2', "1", sub(new Date(), { minutes: 5 }).toISOString()),
     ],
     status: 'idle',
+    error: null
 }
 
 const postsSlice = createSlice({
@@ -65,11 +68,33 @@ const postsSlice = createSlice({
                 existingPost.reactions[reaction]++
             }
         }
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchPosts.pending, (state, action) => {
+                state.status = 'pending'
+            })
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                state.status = 'success'
+                state.posts = state.posts.concat(action.payload)
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.status = 'error'
+                // null assertion operator
+                state.error = action.error.message!
+            })
     }
 })
 
-export const initialPosts = (state: RootState) => state.posts;
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+    const response = await client.get('/fakeApi/posts')
+    return response.data
+})
 
 export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions; 
 
 export default postsSlice.reducer
+
+export const selectAllPosts = (state: RootState) => state.posts.posts;
+
+export const selectPostById = (state: RootState, id: string) => state.posts.posts.find(post => post.id === id);
